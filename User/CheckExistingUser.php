@@ -34,11 +34,11 @@ if ($result = mysqli_query($con, $sql))
 
 if ($duplicated_user > 0)
 {
-    $response["user_exist"] = true;
+    $response["error"] = true;
 }
 else
 {
-    $response["user_exist"] = false;
+    $response["error"] = false;
 }
 
 echo json_encode($response);
