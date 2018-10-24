@@ -15,31 +15,35 @@ $db = $config['db'];
 // This variable contains function whitch opens a new connection to the MySQL server.
 $con = mysqli_connect($db['host'], $db['user'], $db['password'],$db['database']);
 
-$username = $_GET["username"];
+$email = $_GET["email"];
 
-$lengh = mb_strlen($username);
+$lengh = mb_strlen($email);
 
-$duplicated_user = 0;
+$duplicated_email = 0;
 
-$sql = "SELECT COUNT(*) AS number FROM user WHERE username='$username'";
+$sql = "SELECT COUNT(*) AS number FROM user WHERE email='$email'";
 
 $response = array();
 
-// Shows duplicated user: 1 - user already exist, 0 - user doesn't exist
-$duplicated_user = 0;
+// Shows duplicated email: 1 - email already exist, 0 - email doesn't exist
+$duplicated_email = 0;
 
 if ($result = mysqli_query($con, $sql))
 {
     while ($row = mysqli_fetch_assoc($result))
     {
-        $duplicated_user = (int) $row["number"];
+        $duplicated_email = (int) $row["number"];
     }
 }
 
-if ($duplicated_user > 0 || $lengh < 3)
+if ( $duplicated_email > 0
+    || $lengh < 5
+    || $lengh > 320
+    || !filter_var($email, FILTER_VALIDATE_EMAIL))
 {
     $response["error"] = true;
 }
+
 else
 {
     $response["error"] = false;
