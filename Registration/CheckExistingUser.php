@@ -17,6 +17,10 @@ $con = mysqli_connect($db['host'], $db['user'], $db['password'],$db['database'])
 
 $username = $_GET["username"];
 
+$lengh = mb_strlen($username);
+
+$duplicated_user = 0;
+
 $sql = "SELECT COUNT(*) AS number FROM user WHERE username='$username'";
 
 $response = array();
@@ -32,7 +36,7 @@ if ($result = mysqli_query($con, $sql))
     }
 }
 
-if ($duplicated_user > 0)
+if ($duplicated_user > 0 || $lengh < 3)
 {
     $response["error"] = true;
 }
